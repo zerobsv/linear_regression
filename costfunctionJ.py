@@ -16,7 +16,7 @@ def minimal_cost_function(X, y):
 	return theta
 
 # Calculate the cost function J for linear regression
-def costFunctionJ(X,y,theta):
+def costFunctionJ(X, y, theta):
 	m 			= X.shape[0]
 	prediction 	= X @ theta # or np.matmul(X, theta)
 	# print("Prediction: ", prediction, prediction.shape)
@@ -44,7 +44,7 @@ if __name__ == '__main__':
 	theta = minimal_cost_function(X, y)
 	print("Theta after Normal Equation: ", theta, theta.shape)
 
-	finalcost = costFunctionJ(X,y,theta)
+	finalcost = costFunctionJ(X, y, theta)
 	print("Final Cost Using Normal Equation: ", finalcost)
 
 
