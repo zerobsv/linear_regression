@@ -1,6 +1,4 @@
 import numpy as np
-import os
-
 
 def costFunctionJ(X,y,theta):
 	m 			= X.shape[0]
@@ -11,23 +9,20 @@ def costFunctionJ(X,y,theta):
 	return J
 
 def gradientDescent(X,y,theta,alpha,m,numIter):
-	for i in xrange(numIter):
+	for iter in range(numIter):
 		gradient = theta - alpha * (1.0/m) * np.sum(np.subtract(np.dot(X,theta),y))
-		print "Gradient: ", gradient, "Iteration: ", i 
+		print("Gradient: ", gradient, "Iteration: ", iter)
 		theta = gradient
 	return theta
 
-def generateData():
-	X = np.zeros(shape=(rows,cols))
-	y = np.zeros(shape=(rows,1))
+def generateData(rows=100, cols=2):
+	X = np.ones(shape=(rows,cols))
+	y = np.ones(shape=(rows,1))
 	theta = np.ones(shape=(cols,1))
-	for i in xrange(0,rows):
-		for j in xrange(0,cols):
-			if(j == 0):
-				X[i][j] = 1
-			else:
-				X[i][j] = (i*j/17) *100
-	for i in xrange(rows):
+	for i in range(0,rows):
+		for j in range(1,cols):
+			X[i][j] = (i*j/17) *100
+	for i in range(rows):
 		y[i][0] = 15
 	return X,y,theta
 
@@ -40,11 +35,12 @@ if __name__ == '__main__':
 	cols = 2
 	X,y,theta = generateData()
 	m = X.shape[0]
-	alpha = 0.0001
-	numIter = 10000
+	alpha = 0.005
+	numIter = 1000
 	beforeLearn = costFunctionJ(X,y,theta)
 	theta = gradientDescent(X,y,theta,alpha,m,numIter)
-	print "Before Learning: "
-	print beforeLearn
-	print "After learning: "
-	print costFunctionJ(X,y,theta)
+	print("Before Learning: ")
+	print(beforeLearn)
+	print("After learning: ")
+	print(costFunctionJ(X,y,theta))
+

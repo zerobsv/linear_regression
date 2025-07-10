@@ -26,21 +26,6 @@ def costFunctionJ(X,y,theta):
 	J   		= (1.0/(2*m)) * np.sum(sqrError) 
 	return J
 
-# Perform gradient descent to minimize the cost function
-def gradientDescent(X,y,theta,alpha,numIter):
-	m = X.shape[0]
-	Xt = X.T
-	for _ in range(numIter):
-		prediction 	= X @ theta # or np.matmul(X, theta)
-		Error  		= np.subtract(prediction, y)
-		print("Error: ", Error, Error.shape)
-		gradient = Xt @ Error
-		gradient = gradient * (1.0/m)
-		print("Gradient: " , gradient, gradient.shape)
-		theta = theta - (alpha * gradient)
-		print("Theta: ", theta, theta.shape)
-	return theta
-
 def genData(numPoints, bias, variance):
 	x = np.ones(shape=(numPoints, 2))
 	y = np.ones(shape=(numPoints, 1))
@@ -54,19 +39,6 @@ def genData(numPoints, bias, variance):
 if __name__ == '__main__':
 	X , y = genData(100,2.5,0.1)
 	theta = np.ones((2, 1)) # Shape (2, 1) for two features (bias and x)
-	numIter = 10
-	alpha = 0.05
-
-
-	initialcost = costFunctionJ(X,y,theta)
-
-	# Using gradient descent
-	theta = gradientDescent(X,y,theta,alpha,numIter)
-	print("Theta after Gradient Descent: ", theta, theta.shape)
-
-	finalcost = costFunctionJ(X,y,theta)
-	print("Initial Cost: ", initialcost)
-	print("Final Cost: ", finalcost)
 
 	# Using the normal equation
 	theta = minimal_cost_function(X, y)
