@@ -1,40 +1,51 @@
 import numpy as np
-import os
 
-
+# Lambda for regularization
 lx = 0.05
 
 def costFunctionJ(X,y,theta):
 	m 			= X.shape[0]
-	prediction 	= np.dot(X,theta)
-	Error  		= np.subtract(prediction,y)
+	prediction 	= np.dot(X, theta)
+	Error  		= np.subtract(prediction, y)
 	sqrError	= np.power(Error,2)
 	J   		= (1.0/(2*m)) * np.sum(sqrError) 
-	sumThetaSq  = np.sum(np.power(theta,2))
+	sumThetaSq  = np.sum(np.power(theta, 2))
 	J 			= J + lx * sumThetaSq
 	return J
 
-def gradientDescent(X,y,theta,alpha,m,numIter):
-	for i in xrange(numIter):
-		gradient = ( theta * (1.0 - (alpha * (lx /m)) ) )- alpha * (1.0/m) * np.sum(np.subtract(np.dot(X,theta),y))
-		gradient[0][0] = theta[0][0] - alpha * (1.0/m) * np.subtract(X[0][0]*theta[0][0],y[0][0])
-		print "Gradient: ", gradient, "Iteration: ", i 
+def gradientDescent(X,y,theta,alpha,numIter):
+	m = X.shape[0]
+	for iter in range(numIter):
+		gradient = ( theta * (1.0 - (alpha * (lx /m)) ) )- alpha * (1.0/m) * np.sum(np.subtract(np.dot(X, theta), y))
+		gradient[0][0] = theta[0][0] - alpha * (1.0/m) * np.subtract(X[0][0] * theta[0][0], y[0][0])
+		print("Gradient: ", gradient, "Iteration: ", iter)
 		theta = gradient
 	return theta
 
-def generateData():
-	X = np.zeros(shape=(rows,cols))
-	y = np.zeros(shape=(rows,1))
-	theta = np.ones(shape=(cols,1))
-	for i in xrange(0,rows):
-		for j in xrange(0,cols):
-			if(j == 0):
-				X[i][j] = 1
-			else:
-				X[i][j] = (i*j/17) *100
-	for i in xrange(rows):
+def generateData(rows=100, cols=2):
+	X = np.ones(shape=(rows, cols))
+	y = np.ones(shape=(rows, 1))
+	theta = np.ones(shape=(cols, 1))
+	for i in range(0, rows):
+		for j in range(1, cols):
+			X[i][j] = (i*j/17) *100
+	for i in range(rows):
 		y[i][0] = 15
 	return X,y,theta
+
+
+def minimal_cost_function(X, y):
+	product = X.T @ X # or np.dot
+	print("Product: ", product, product.shape)
+	invTerm = np.linalg.inv(product)
+	print("Inverse Term: ", invTerm, invTerm.shape)
+	secondTerm = X.T @ y # or np.dot
+	print("Second Term: ", secondTerm, secondTerm.shape)
+	theta = np.dot(invTerm, secondTerm)
+	print("Inverse Term X Transpose: ", secondTerm, secondTerm.shape)
+	# theta = inv(X^T * X) * (X^T * y)
+	# where X is the design matrix and y is the target variable
+	return theta
 
 
 if __name__ == '__main__':
@@ -44,12 +55,17 @@ if __name__ == '__main__':
 	rows = 100
 	cols = 2
 	X,y,theta = generateData()
-	m = X.shape[0]
-	alpha = 0.0001
-	numIter = 10000
-	beforeLearn = costFunctionJ(X,y,theta)
-	theta = gradientDescent(X,y,theta,alpha,m,numIter)
-	print "Before Learning: "
-	print beforeLearn
-	print "After learning: "
-	print costFunctionJ(X,y,theta)
+	alpha = 0.0005
+	numIter = 292000
+	beforeLearn = costFunctionJ(X, y, theta)
+	theta = gradientDescent(X, y, theta, alpha, numIter)
+	print("Before Learning: ")
+	print(beforeLearn)
+	print("After learning: ")
+	print(costFunctionJ(X, y, theta))
+
+	theta = minimal_cost_function(X, y)
+	print("Theta after Normal Equation: ", theta, theta.shape)
+
+	finalcost = costFunctionJ(X, y, theta)
+	print("Final Cost Using Normal Equation: ", finalcost)
