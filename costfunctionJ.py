@@ -1,5 +1,4 @@
 import numpy as np
-import os
 import random
 
 # Calculate the cost function J for linear regression
@@ -17,17 +16,16 @@ def costFunctionJ(X,y,theta):
 def gradientDescent(X,y,theta,alpha,m,numIter):
 	xTrans      = np.transpose(X)
 	for x in range(numIter):
-		try:
-			cost = costFunctionJ(X,y,theta)
-			print("Iteration %d | Cost: %f" % (x, cost))
-		except Exception as e:
-			print("Error calculating cost function: ", e)
-			break
-		prediction 	= X * theta
+		prediction 	= np.dot(xTrans, theta)
 		Error  		= np.subtract(prediction, y)
-		gradient = (xTrans * Error) * (1.0/m)
-		print("Gradient: " , gradient)
-		theta = theta - alpha * gradient
+		print("Error: ", Error, Error.shape)
+		print("Theta: ", theta, theta.shape)
+		print("X Transpose: ", xTrans, xTrans.shape)
+		gradient = np.dot(X, Error)
+		gradient = gradient * (1.0/m)
+		print("Gradient: " , gradient, gradient.shape)
+		theta = theta - (alpha * gradient)
+		print("Theta: ", theta, theta.shape)
 	return theta
 
 # Calculate the minimal cost function using the normal equation
@@ -39,27 +37,32 @@ def minimal_cost_function():
 	return np.dot(np.dot(invTerm, xTrans), y)
 
 def genData(numPoints, bias, variance):
-    # x = np.zeros(shape=(2,numPoints))
-	x = np.zeros(shape=numPoints)
+	x = np.zeros(shape=(2, numPoints))
 	y = np.zeros(shape=numPoints)
-    # basically a straight line
+	# basically a straight line
 	for i in range(0, numPoints):
-        # bias feature 
-		# x[0][i] = 1
-		x[i] = i
-        # our target variable
+		# bias feature 
+		x[0][i] = 1
+		x[1][i] = i
+		# our target variable
 		y[i] = (i + bias) + random.uniform(0, 1) * variance
 	return x, y
 
 if __name__ == '__main__':
 	X , y = genData(100,2.5,0.1)
-	theta = np.ones(100)
+	theta = np.ones((2, 100))
 	numIter = 10
 	alpha = 0.005
+
+	initialcost = costFunctionJ(X,y,theta)
 
 	# Using gradient descent
 	theta = gradientDescent(X,y,theta,alpha,100,numIter)
 	print(theta)
+
+	finalcost = costFunctionJ(X,y,theta)
+	print("Initial Cost: ", initialcost)
+	print("Final Cost: ", finalcost)
 
 	# # Using the normal equation
 	# theta = minimal_cost_function()
