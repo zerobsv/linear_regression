@@ -58,7 +58,7 @@ def generateData(rows=100, cols=2):
         # y[i][0] = intercept_val + slope_val * X[i][1] + np.random.randn() * 2
         # For simplicity, let's make y a function of the second column of X (index 1)
         y[i][0] = intercept_val + slope_val * X[i][1] + np.random.randn() * 10
-
+	
     return X, y, theta
 
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 #	X = np.matrix([[1,1],[1,2],[1,3]]) #Shape: m x (featureSize)
 #	y = np.matrix([[1],[5],[7]])       #Shape: m x 1
 #	theta = np.matrix([[1],[1]])       #Shape: (featureSize) x 1
-	X,y,theta = generateData()
+	X, y, theta = generateData()
 	alpha = 0.0005
 	numIter = 180000
 	beforeLearn = costFunctionJ(X, y, theta)
@@ -95,3 +95,7 @@ if __name__ == '__main__':
 
 	finalcost = costFunctionJ(X, y, theta)
 	print("Final Cost Using Normal Equation: ", finalcost)
+
+	predictions = np.dot(X, theta)
+	for pred, actual in zip(predictions, y):
+		print("Predicted: ", pred, "Actual: ", actual)

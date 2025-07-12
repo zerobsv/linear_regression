@@ -157,3 +157,10 @@ print(f"Mean Squared Error (MSE): {mse:.4f}")
 # for that bias term, and model.coef_[0][1] for the actual feature.
 print(f"Coefficients (excluding intercept term's coefficient if X has bias col): {model.coef_[0][1:]}")
 print(f"Intercept: {model.intercept_[0]}")
+
+theta = model.coef_.reshape(-1, 1)  # Reshape to match the expected shape of theta
+print("Theta (model coefficients):", theta, theta.shape)
+
+predictions = np.dot(X, theta)
+for pred, actual in zip(predictions, y):
+    print("Predicted: ", pred, "Actual: ", actual)
