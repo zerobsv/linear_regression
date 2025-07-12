@@ -16,8 +16,9 @@ def costFunctionJ(X, y, theta):
 def gradientDescent(X, y, theta, alpha, numIter):
 	m = X.shape[0]
 	for iter in range(numIter):
-		gradient = ( theta * (1.0 - (alpha * (lx / m)) ) )- alpha * (1.0 / m) * np.sum(np.subtract(np.dot(X, theta), y))
-		gradient[0][0] = theta[0][0] - alpha * (1.0 / m) * np.subtract(X[0][0] * theta[0][0], y[0][0])
+		htheta = np.dot(X, theta)
+		gradient = ( theta * (1.0 - (alpha * (lx / m)) ) )- alpha * (1.0 / m) * np.sum(np.subtract(htheta, y))
+		gradient[0] = theta[0] - alpha * (1.0 / m) * np.subtract(htheta[0], y[0])
 		print("Gradient: ", gradient, "Iteration: ", iter)
 		theta = gradient
 	return theta
